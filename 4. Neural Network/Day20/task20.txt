@@ -1,0 +1,35 @@
+\Cases\bank\bank.csv
+
+housing.csv
+R : Price
+Early stopping: Epoch 00011: early stopping
+r2 score: R2_Score:0.5598973385549957
+---------------------------------
+BIKE share demand
+pre processing
+do train test split(test_size =0.1,stratify=df["weekday"])
+re-write the energy efficiency code
+
+test.csv pre processing ,min max scale
+.predict() and inverse_transform()
+count = casual+reg
+
+o/p1 : casual
+o/p2 : registered
+---------------------------
+vehicle silhouettes
+train test split ,test_size .1
+min max scale on training
+label encoding on y
+sparsecategoricallentropy
+----
+Test loss = 0.4690 
+Test acc = 0.7176
+-------------------------------------
+BIKE share demand
+
+									dense3 5---dense5 3----casual 1	
+input 15---- Dense1 10---- dense2 7
+									dense4 4---dense6 3----registered 1
+
+										

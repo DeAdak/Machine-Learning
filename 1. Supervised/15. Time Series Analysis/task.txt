@@ -1,0 +1,32 @@
+Datasets/FRED-NROUST.csv
+332 observ
+train : 320
+test : last 12
+
+https://data.nasdaq.com/publishers/QDL
+Datasets/ZILLOW-M1301_MLSF.csv
+83 values
+train : remaining
+test: last 7
+find bet model among the smoothing methods
+--------------
+pip install Nasdaq-Data-Link
+
+https://data.nasdaq.com/data/BP/ELEC_GEN_IND-electricity-generation-india
+
+https://data.nasdaq.com/data/BP/OIL_RESERVES_IND-proved-oil-reserves-india
+
+BOE/XUDLBK64
+
+pip install pmdarima
+------------------
+Datasets/FRED-NROUST.csv
+332 observ
+train : 320
+test : last 12
+Apply auto_arima( )
+------------------
+https://datahack.analyticsvidhya.com/contest/practice-problem-time-series-2/#ProblemStatement
+
+https://datahack.analyticsvidhya.com/contest/practice-problem-loan-prediction-iii/#ProblemStatement
+

@@ -1,0 +1,7 @@
+Cases/vehicle/vehicle.csv
+R : Class
+K-Fold CV : cross_val_score
+LDA
+QDA
+Gaussian NB
+scoring = neg_log_loss

@@ -1,0 +1,7 @@
+if any coulumn has data in decimal, then standardize it first.
+
+
+from sklearn.preprocessing import StandardScaler
+stdScale=StandardScaler()
+X_scaled=stdScale.fit_transform(X)
+gscv.fit(X_scaled,y)

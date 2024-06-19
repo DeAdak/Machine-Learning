@@ -1,0 +1,43 @@
+case/sonar/sonar.csv
+SVC LIN
+SVC RAD
+LDA
+QDA
+Log Reg
+DecisionTreeClassifier
+using BaggingClassifier
+
+sanrander customer statisfaction
+SVC LIN
+SVC RAD
+LDA
+QDA
+Log Reg
+DecisionTreeClassifier
+using BaggingClassifier
+
+human resourse analytics
+R : Left
+F : all
+random forest
+max_features:[3,4,6,8,10]
+best param
+
+https://www.kaggle.com/yasserh/wine-quality-dataset
+wine quality-dataset
+R : Left
+random forest
+max_features:[3,4,6,8,10]
+best param based on log loss
+
+
+
+
+https://docs.h2o.ai/h2o/latest-stable/h2o-docs/grid-search.html
+
+https://github.com/Avkash/mldl/blob/master/orgs/h2o/guide/algo/grid/h2o_grid_drf_houseprice_python.md
+
+Cases/King City Housing
+Response: price
+Random Forest using h2omax_features : [6,10,15,20]
+best param based on r2

@@ -1,0 +1,46 @@
+What is NLP?
+Natural language processing (NLP) is a machine learning technology that gives computers the ability to interpret, manipulate, and comprehend human language.
+
+NLP Application in in Real-Life
+	Language Translation
+	Sentiment Analysis
+	Autocomplete & Autocorrect
+	Data Extraction
+	Speech Recognition
+	Spellcheck
+	Chatbots
+	Voice Assistants
+NLP Libraries
+	NLTK
+	Spacy
+	Gensim
+	fastText
+	Stanford toolkit (Glove)
+Word Embedding
+If we use machine learning then string cannot be used so we need to do word embedding which can be done by below methods.
+	BERT
+	Spacy
+	Glove
+	Transformers
+	Bag of words (Count Vectorizer)
+	TF-IDF
+	Word2Vec
+
+https://www.kaggle.com/c/word2vec-nlp-tutorial
+dataset: labeledTrainData
+
+Count Vectorization
+RF
+DT
+XGB
+
+TF-IDF
+RF
+DT
+XGB
+==============
+Count Vectorization
+Principle Component Analysis & LogisticRegression
+
+TF-IDF
+Principle Component Analysis & LogisticRegression

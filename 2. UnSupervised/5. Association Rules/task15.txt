@@ -1,0 +1,18 @@
+Association Rules datasets/Cosmetics.csv
+Generate rules:
+min_support = 0.1
+confidence >= 0.7
+? rules
+Top 3 rules sorted by Lift ratio and then by confidence
+
+min_support = 0.05
+confidence >= 0.7
+? rules
+Top 3 rules sorted by Lift ratio and then by confidence
+------------------------
+Groceries.csv & DatasetA.csv
+min_supp = 0.1
+?rules
+min_supp = 0.05
+?rules
+--------------------------

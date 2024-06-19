@@ -1,0 +1,4 @@
+https://www.tensorflow.org/api_docs/python/tf/keras/datasets/fashion_mnist
+
+https://www.kaggle.com/cdawn1/messy-vs-clean-room
+

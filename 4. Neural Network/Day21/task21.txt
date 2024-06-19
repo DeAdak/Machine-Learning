@@ -1,0 +1,14 @@
+BANKRUPTCY.csv
+25 F
+layers			25 -- 20--10--5--1
+drop_out_rate   0.2   0.1
+
+25 -- 20 -- 10--5--1
+L1 regularizer 
+----------------
+glass identification
+i/p  --7---------------5--------------3--------6(softmax)
+relu  leaky(aplha=0.1) elu(aplha=0.1) relu
+opti "adam"
+batch normalization()
+epochs = 100,early stoping

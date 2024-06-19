@@ -1,0 +1,21 @@
+ChemicalProcess
+R: "Yield"
+F: ALL OTHERS
+K= 1 to 20
+1. mean Imputation & best K for K-NN
+2. median Imputation & best K for K-NN
+find best r2_score
+----------------------------
+ChemicalProcess
+R: "Yield"
+F: ALL OTHERS
+K= 1 to 20
+1. mean Imputation, linear regression
+2. median Imputation, linear regression
+find best r2_score
+-----------------
+--Concrete_Data-- REGRESSION
+R:Sthregth
+F: All other
+Kfold
+find best r2_score

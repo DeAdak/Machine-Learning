@@ -1,0 +1,16 @@
+GradientBoostingRegressor
+Cases/Concrete Strength/Concrete_Data.csv
+learning_rate : [0.01,0.1,0.3,0.5,0.6]
+n_estimators: [10,25,50]
+max_depth: [3,5,None]
+
+https://docs.h2o.ai/h2o/latest-stable/h2o-docs/grid-search.html
+
+h2o 
+GradientBoostingRegressor
+Cases/Concrete Strength/Concrete_Data.csv
+learn_rate : [0.01,0.1,0.3,0.5,0.6]
+ntrees = [10,25,50]
+max_depth: [3,5,10]
+
+https://spark.apache.org/docs/latest/ml-guide.html

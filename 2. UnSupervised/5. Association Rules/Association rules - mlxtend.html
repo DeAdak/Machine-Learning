@@ -1,0 +1,2668 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/ -->
+<html lang="en" class="wf-opensans-n4-active wf-ptsans-n4-active wf-active"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A library consisting of useful tools and extensions for the day-to-day data science tasks."> 
+    <meta name="author" content="Sebastian Raschka"> 
+    <link rel="canonical" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">
+    <link rel="shortcut icon" href="http://rasbt.github.io/mlxtend/img/favicon.ico">
+
+    <title>Association rules - mlxtend</title>
+
+    <link href="./Association rules - mlxtend_files/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="./Association rules - mlxtend_files/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Association rules - mlxtend_files/hack.min.css">
+    <link href="./Association rules - mlxtend_files/css" rel="stylesheet" type="text/css">
+    <link href="./Association rules - mlxtend_files/css(1)" rel="stylesheet" type="text/css">
+    <link href="./Association rules - mlxtend_files/base.css" rel="stylesheet">
+    <link href="./Association rules - mlxtend_files/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Association rules - mlxtend_files/highlight.css">
+
+
+    <link href="./Association rules - mlxtend_files/base(1).css" rel="stylesheet">
+
+
+    <link href="./Association rules - mlxtend_files/bootstrap-custom.css" rel="stylesheet">
+
+
+    <link href="./Association rules - mlxtend_files/bootstrap-custom.min(1).css" rel="stylesheet">
+
+
+    <link href="./Association rules - mlxtend_files/cinder(1).css" rel="stylesheet">
+
+
+    <link href="./Association rules - mlxtend_files/font-awesome-4.0.3.css" rel="stylesheet">
+
+
+    <link href="./Association rules - mlxtend_files/highlight(1).css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script async="" src="./Association rules - mlxtend_files/analytics.js.download"></script><script src="./Association rules - mlxtend_files/webfont.js.download"></script>
+    <link rel="stylesheet" href="./Association rules - mlxtend_files/css(2)" media="all"><script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-38457794-2', 'rasbt.github.io/mlxtend/');
+    ga('send', 'pageview');
+    </script>
+    
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax.MathJax_FullWidth {text-align: center; display: table-cell!important; width: 10000em!important}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax_LineBox {display: table!important}
+.MathJax_LineBox span {display: table-cell!important; width: 10000em!important; min-width: 0; max-width: none; padding: 0; border: 0; margin: 0}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Main; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Main-bold; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Main-Bold.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Main-italic; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Main-Italic.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Math-italic; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Caligraphic; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Size1; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Size1-Regular.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Size2; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Size3; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf?V=2.7.1') format('opentype')}
+@font-face {font-family: MathJax_Size4; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff?V=2.7.1') format('woff'), url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf?V=2.7.1') format('opentype')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+<body style=""><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div id="MathJax_Message" style="display: none;"></div>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            <a class="navbar-brand" href="http://rasbt.github.io/mlxtend/">mlxtend</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li>
+                        <a href="http://rasbt.github.io/mlxtend/">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/USER_GUIDE_INDEX/">User Guide Index</a>
+</li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">classifier</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/Adaline/">Adaptive Linear Neuron -- Adaline</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/EnsembleVoteClassifier/">EnsembleVoteClassifier</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/LogisticRegression/">Logistic Regression</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/MultiLayerPerceptron/">Neural Network - Multilayer Perceptron</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/OneRClassifier/">OneRClassifier -- "One Rule" for Classification</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/Perceptron/">Perceptron</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/SoftmaxRegression/">Softmax Regression</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/StackingClassifier/">StackingClassifier</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/">StackingCVClassifier</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">cluster</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/cluster/Kmeans/">Kmeans</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">data</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/autompg_data/">Auto MPG</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/boston_housing_data/">Boston Housing Data</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/iris_data/">Iris Dataset</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/loadlocal_mnist/">Load the MNIST Dataset from Local Files</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/make_multiplexer_dataset/">Make Multiplexer Dataset</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/mnist_data/">MNIST Dataset</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/three_blobs_data/">Three Blobs Dataset</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/data/wine_data/">Wine Dataset</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">evaluate</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/accuracy_score/">Accuracy Score</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/bias_variance_decomp/">Bias-Variance Decomposition</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/bootstrap/">Bootstrap</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/bootstrap_point632_score/">bootstrap_point632_score</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/BootstrapOutOfBag/">BootstrapOutOfBag</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/cochrans_q/">Cochran's Q Test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/combined_ftest_5x2cv/">5x2cv combined *F* test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/confusion_matrix/">Confusion Matrix</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/create_counterfactual/">Create Counterfactual</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/feature_importance_permutation/">Feature Importance Permutation</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/ftest/">F-Test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/lift_score/">Lift Score</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/mcnemar_table/">Contigency Table for McNemar's Test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/mcnemar_tables/">Contigency Tables for McNemar's Test and Cochran's Q Test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/mcnemar/">McNemar's Test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/paired_ttest_5x2cv/">5x2cv paired *t* test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/paired_ttest_kfold_cv/">K-fold cross-validated paired *t* test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/paired_ttest_resampled/">Resampled paired *t* test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/permutation_test/">Permutation Test</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/PredefinedHoldoutSplit/">PredefinedHoldoutSplit</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/RandomHoldoutSplit/">RandomHoldoutSplit</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/evaluate/scoring/">Scoring</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">feature_extraction</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/feature_extraction/LinearDiscriminantAnalysis/">Linear Discriminant Analysis</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/feature_extraction/PrincipalComponentAnalysis/">Principal Component Analysis</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/feature_extraction/RBFKernelPCA/">RBFKernelPCA</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">feature_selection</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/feature_selection/ColumnSelector/">ColumnSelector</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/feature_selection/ExhaustiveFeatureSelector/">Exhaustive Feature Selector</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/feature_selection/SequentialFeatureSelector/">Sequential Feature Selector</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">file_io</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/file_io/find_filegroups/">Find Filegroups</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/file_io/find_files/">Find Files</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">frequent_patterns</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/apriori/">Apriori</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">Association rules</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/fpgrowth/">Fpgrowth</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/fpmax/">Fpmax</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">general concepts</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/general_concepts/activation-functions/">Activation Functions for Artificial Neural Networks</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/general_concepts/gradient-optimization/">Gradient Descent and Stochastic Gradient Descent</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/general_concepts/linear-gradient-derivative/">Deriving the Gradient Descent Rule for Linear Regression and Adaline</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/general_concepts/regularization-linear/">Regularization of Generalized Linear Models</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">image</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/image/extract_face_landmarks/">Extract Face Landmarks</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/image/eyepad_align/">EyepadAlign</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">math</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/math/num_combinations/">Compute the Number of Combinations</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/math/num_permutations/">Compute the Number of Permutations</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/math/vectorspace_dimensionality/">Vectorspace Dimensionality</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/math/vectorspace_orthonormalization/">Vectorspace Orthonormalization</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">plotting</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/category_scatter/">Scatterplot with Categories</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/checkerboard_plot/">Checkerboard Plot</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/plot_pca_correlation_graph/">PCA Correlation Circle</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/ecdf/">Empirical Cumulative Distribution Function Plot</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/enrichment_plot/">Enrichment Plot</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/heatmap/">Heatmap</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/plot_confusion_matrix/">Confusion Matrix</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/plot_decision_regions/">Plotting Decision Regions</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/plot_learning_curves/">Plotting Learning Curves</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/plot_linear_regression/">Linear Regression Plot</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/plot_sequential_feature_selection/">Plot Sequential Feature Selection</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/scatterplotmatrix/">Scatter Plot Matrix</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/scatter_hist/">Scatter Histogram</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/plotting/stacked_barplot/">Stacked Barplot</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">preprocessing</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/CopyTransformer/">CopyTransformer</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/DenseTransformer/">DenseTransformer</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/MeanCenterer/">Mean Centerer</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/minmax_scaling/">MinMax Scaling</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/one-hot_encoding/">One hot encoding</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/shuffle_arrays_unison/">Shuffle Arrays in Unison</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/standardize/">Standardize</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/preprocessing/TransactionEncoder/">TransactionEncoder</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">regressor</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/regressor/LinearRegression/">LinearRegression</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/regressor/StackingCVRegressor/">StackingCVRegressor</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/regressor/StackingRegressor/">StackingRegressor</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">text</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/text/generalize_names/">Generalize Names</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/text/generalize_names_duplcheck/">Generalize Names &amp; Duplicate Checking</a>
+</li>
+
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/text/tokenizer/">Tokenizer</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/">utils</a>
+    <ul class="dropdown-menu">
+        
+            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/user_guide/utils/Counter/">Counter</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.classifier/">Mlxtend.classifier</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.cluster/">Mlxtend.cluster</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.data/">Mlxtend.data</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.evaluate/">Mlxtend.evaluate</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.feature_extraction/">Mlxtend.feature extraction</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.feature_selection/">Mlxtend.feature selection</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.file_io/">Mlxtend.file io</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.frequent_patterns/">Mlxtend.frequent patterns</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.image/">Mlxtend.image</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.plotting/">Mlxtend.plotting</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.preprocessing/">Mlxtend.preprocessing</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.regressor/">Mlxtend.regressor</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.text/">Mlxtend.text</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.utils/">Mlxtend.utils</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li>
+                        <a href="http://rasbt.github.io/mlxtend/installation/">Installation</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/CHANGELOG/">Release Notes</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/Code-of-Conduct/">Code of Conduct</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/CONTRIBUTING/">How To Contribute</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/contributors/">Contributors</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/license/">License</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/cite/">Citing Mlxtend</a>
+</li>
+
+                        
+                            
+<li>
+    <a href="http://rasbt.github.io/mlxtend/discuss/">Discuss</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fa fa-search"></i> Search
+                        </a>
+                    </li>
+
+                <!--
+                    <li >
+                        <a rel="next" href="../apriori/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../fpgrowth/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>-->
+                    <li>
+                        <a href="https://github.com/rasbt/mlxtend"><i class="fa fa-github"></i> GitHub</a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#association-rules-generation-from-frequent-itemsets">Association Rules Generation from Frequent Itemsets</a></li>
+        <li class="first-level"><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#overview">Overview</a></li>
+            <li class="second-level"><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#metrics">Metrics</a></li>
+                 <!-- 
+                <li class="third-level"><a href="#support">'support':</a></li>
+                <li class="third-level"><a href="#confidence">'confidence':</a></li>
+                <li class="third-level"><a href="#lift">'lift':</a></li>
+                <li class="third-level"><a href="#leverage">'leverage':</a></li>
+                <li class="third-level"><a href="#conviction">'conviction':</a></li>  -->
+        <li class="first-level "><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#references">References</a></li>
+        <li class="first-level "><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#example-1-generating-association-rules-from-frequent-itemsets">Example 1 -- Generating Association Rules from Frequent Itemsets</a></li>
+        <li class="first-level "><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#example-2-rule-generation-and-selection-criteria">Example 2 -- Rule Generation and Selection Criteria</a></li>
+        <li class="first-level "><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#example-3-frequent-itemsets-with-incomplete-antecedent-and-consequent-information">Example 3 -- Frequent Itemsets with Incomplete Antecedent and Consequent Information</a></li>
+        <li class="first-level "><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#example-4-pruning-association-rules">Example 4 -- Pruning Association Rules</a></li>
+        <li class="first-level "><a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/#api">API</a></li>
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h2 id="association-rules-generation-from-frequent-itemsets">Association Rules Generation from Frequent Itemsets</h2>
+<p>Function to generate association rules from frequent itemsets</p>
+<blockquote>
+<p>from mlxtend.frequent_patterns import association_rules</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>Rule generation is a common task in the mining of frequent patterns. <em>An association rule is an implication expression of the form <span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-1-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1" style="width: 4.035em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.228em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.515em, 1003.23em, 2.523em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-2"><span class="mi" id="MathJax-Span-3" style="font-family: MathJax_Math-italic;">X<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-4" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-5" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">Y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.204em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>X</mi><mo stretchy="false">→</mo><mi>Y</mi></math></span></span><script type="math/tex" id="MathJax-Element-1">X \rightarrow Y</script>, where <span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-2-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-6" style="width: 1.011em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.809em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.515em, 1000.81em, 2.523em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-7"><span class="mi" id="MathJax-Span-8" style="font-family: MathJax_Math-italic;">X<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>X</mi></math></span></span><script type="math/tex" id="MathJax-Element-2">X</script> and <span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-3-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-9" style="width: 1.011em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.809em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.515em, 1000.81em, 2.523em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-10"><span class="mi" id="MathJax-Span-11" style="font-family: MathJax_Math-italic;">Y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.204em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Y</mi></math></span></span><script type="math/tex" id="MathJax-Element-3">Y</script> are disjoint itemsets</em> [1]. A more concrete example based on consumer behaviour would be  <span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-4-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mo fence=&quot;false&quot; stretchy=&quot;false&quot;&gt;{&lt;/mo&gt;&lt;mi&gt;D&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mo fence=&quot;false&quot; stretchy=&quot;false&quot;&gt;}&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mo fence=&quot;false&quot; stretchy=&quot;false&quot;&gt;{&lt;/mo&gt;&lt;mi&gt;B&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mo fence=&quot;false&quot; stretchy=&quot;false&quot;&gt;}&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-12" style="width: 11.595em; display: inline-block;"><span style="display: inline-block; position: relative; width: 9.327em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.464em, 1009.28em, 2.775em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-13"><span class="mo" id="MathJax-Span-14" style="font-family: MathJax_Main;">{</span><span class="mi" id="MathJax-Span-15" style="font-family: MathJax_Math-italic;">D</span><span class="mi" id="MathJax-Span-16" style="font-family: MathJax_Math-italic;">i</span><span class="mi" id="MathJax-Span-17" style="font-family: MathJax_Math-italic;">a</span><span class="mi" id="MathJax-Span-18" style="font-family: MathJax_Math-italic;">p</span><span class="mi" id="MathJax-Span-19" style="font-family: MathJax_Math-italic;">e</span><span class="mi" id="MathJax-Span-20" style="font-family: MathJax_Math-italic;">r</span><span class="mi" id="MathJax-Span-21" style="font-family: MathJax_Math-italic;">s</span><span class="mo" id="MathJax-Span-22" style="font-family: MathJax_Main;">}</span><span class="mo" id="MathJax-Span-23" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mo" id="MathJax-Span-24" style="font-family: MathJax_Main; padding-left: 0.305em;">{</span><span class="mi" id="MathJax-Span-25" style="font-family: MathJax_Math-italic;">B</span><span class="mi" id="MathJax-Span-26" style="font-family: MathJax_Math-italic;">e</span><span class="mi" id="MathJax-Span-27" style="font-family: MathJax_Math-italic;">e</span><span class="mi" id="MathJax-Span-28" style="font-family: MathJax_Math-italic;">r</span><span class="mo" id="MathJax-Span-29" style="font-family: MathJax_Main;">}</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left: 0px solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo fence="false" stretchy="false">{</mo><mi>D</mi><mi>i</mi><mi>a</mi><mi>p</mi><mi>e</mi><mi>r</mi><mi>s</mi><mo fence="false" stretchy="false">}</mo><mo stretchy="false">→</mo><mo fence="false" stretchy="false">{</mo><mi>B</mi><mi>e</mi><mi>e</mi><mi>r</mi><mo fence="false" stretchy="false">}</mo></math></span></span><script type="math/tex" id="MathJax-Element-4">\{Diapers\} \rightarrow \{Beer\}</script> suggesting that people who buy diapers are also likely to buy beer. To evaluate the "interest" of such an association rule, different metrics have been developed. The current implementation make use of the <code>confidence</code> and <code>lift</code> metrics. </p>
+<h3 id="metrics">Metrics</h3>
+<p>The currently supported metrics for evaluating association rules and setting selection thresholds are listed below. Given a rule "A -&gt; C", <em>A</em> stands for antecedent and <em>C</em> stands for consequent.</p>
+<h4 id="support">'support':</h4>
+<p>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-5-Frame" tabindex="0" style="text-align: center; position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo&gt;&amp;#x222A;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mtext&gt;range:&amp;#xA0;&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-30" style="width: 26.817em; display: inline-block;"><span style="display: inline-block; position: relative; width: 21.626em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.464em, 1021.52em, 2.775em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-31"><span class="mtext" id="MathJax-Span-32" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-33" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-34" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-35" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-36" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-37" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-38" style="font-family: MathJax_Main; padding-left: 0.305em;">=</span><span class="mtext" id="MathJax-Span-39" style="font-family: MathJax_Main; padding-left: 0.305em;">support</span><span class="mo" id="MathJax-Span-40" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-41" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-42" style="font-family: MathJax_Main; padding-left: 0.204em;">∪</span><span class="mi" id="MathJax-Span-43" style="font-family: MathJax_Math-italic; padding-left: 0.204em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-44" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-45" style="font-family: MathJax_Main;">,</span><span class="mspace" id="MathJax-Span-46" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-47" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-48" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mtext" id="MathJax-Span-49" style="font-family: MathJax_Main; padding-left: 0.154em;">range:&nbsp;</span><span class="mo" id="MathJax-Span-50" style="font-family: MathJax_Main;">[</span><span class="mn" id="MathJax-Span-51" style="font-family: MathJax_Main;">0</span><span class="mo" id="MathJax-Span-52" style="font-family: MathJax_Main;">,</span><span class="mn" id="MathJax-Span-53" style="font-family: MathJax_Main; padding-left: 0.154em;">1</span><span class="mo" id="MathJax-Span-54" style="font-family: MathJax_Main;">]</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left: 0px solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo>∪</mo><mi>C</mi><mo stretchy="false">)</mo><mo>,</mo><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mtext>range:&nbsp;</mtext><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-5">\text{support}(A\rightarrow C) = \text{support}(A \cup C), \;\;\; \text{range: } [0, 1]</script>
+</p>
+<ul>
+<li>introduced in [3]</li>
+</ul>
+<p>The support metric is defined for itemsets, not assocication rules. The table produced by the association rule mining algorithm contains three different support metrics: 'antecedent support', 'consequent support', and 'support'. Here, 'antecedent support' computes the proportion of transactions that contain the antecedent A, and 'consequent support' computes the support for the itemset of the consequent C. The 'support' metric then computes the support of the combined itemset A <span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-6-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mo&gt;&amp;#x222A;&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-55" style="width: 0.809em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.658em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.615em, 1000.61em, 2.523em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-56"><span class="mo" id="MathJax-Span-57" style="font-family: MathJax_Main;">∪</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.878em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo>∪</mo></math></span></span><script type="math/tex" id="MathJax-Element-6">\cup</script> C -- note that 'support' depends on 'antecedent support' and 'consequent support' via min('antecedent support', 'consequent support').</p>
+<p>Typically, support is used to measure the abundance or frequency (often interpreted as significance or importance) of an itemset in a database. We refer to an itemset as a "frequent itemset" if you support is larger than a specified minimum-support threshold. Note that in general, due to the <em>downward closure</em> property, all subsets of a frequent itemset are also frequent.</p>
+<h4 id="confidence">'confidence':</h4>
+<p>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-7-Frame" tabindex="0" style="text-align: center; position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mtext&gt;confidence&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;/mfrac&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mtext&gt;range:&amp;#xA0;&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-58" style="width: 29.337em; display: inline-block;"><span style="display: inline-block; position: relative; width: 23.642em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(0.759em, 1023.54em, 3.48em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-59"><span class="mtext" id="MathJax-Span-60" style="font-family: MathJax_Main;">confidence</span><span class="mo" id="MathJax-Span-61" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-62" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-63" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-64" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-65" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-66" style="font-family: MathJax_Main; padding-left: 0.305em;">=</span><span class="mfrac" id="MathJax-Span-67" style="padding-left: 0.305em;"><span style="display: inline-block; position: relative; width: 7.361em; height: 0px; margin-right: 0.103em; margin-left: 0.103em;"><span style="position: absolute; clip: rect(3.077em, 1007.16em, 4.388em, -999.997em); top: -4.685em; left: 50%; margin-left: -3.627em;"><span class="mrow" id="MathJax-Span-68"><span class="mtext" id="MathJax-Span-69" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-70" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-71" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-72" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-73" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-74" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(3.077em, 1004.79em, 4.388em, -999.997em); top: -3.274em; left: 50%; margin-left: -2.417em;"><span class="mrow" id="MathJax-Span-75"><span class="mtext" id="MathJax-Span-76" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-77" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-78" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-79" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(0.859em, 1007.36em, 1.212em, -999.997em); top: -1.258em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 7.361em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.061em;"></span></span></span></span><span class="mo" id="MathJax-Span-80" style="font-family: MathJax_Main;">,</span><span class="mspace" id="MathJax-Span-81" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-82" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-83" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mtext" id="MathJax-Span-84" style="font-family: MathJax_Main; padding-left: 0.154em;">range:&nbsp;</span><span class="mo" id="MathJax-Span-85" style="font-family: MathJax_Main;">[</span><span class="mn" id="MathJax-Span-86" style="font-family: MathJax_Main;">0</span><span class="mo" id="MathJax-Span-87" style="font-family: MathJax_Main;">,</span><span class="mn" id="MathJax-Span-88" style="font-family: MathJax_Main; padding-left: 0.154em;">1</span><span class="mo" id="MathJax-Span-89" style="font-family: MathJax_Main;">]</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -1.247em; border-left: 0px solid; width: 0px; height: 3.128em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>confidence</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><mrow><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>,</mo><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mtext>range:&nbsp;</mtext><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-7">\text{confidence}(A\rightarrow C) = \frac{\text{support}(A\rightarrow C)}{\text{support}(A)}, \;\;\; \text{range: } [0, 1]</script>
+</p>
+<ul>
+<li>introduced in [3]</li>
+</ul>
+<p>The confidence of a rule A-&gt;C is the probability of seeing the consequent in a transaction given that it also contains the antecedent. Note that the metric is not symmetric or directed; for instance, the confidence for A-&gt;C is different than the confidence for C-&gt;A. The confidence is 1 (maximal) for a rule A-&gt;C if the consequent and antecedent always occur together. </p>
+<h4 id="lift">'lift':</h4>
+<p>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-8-Frame" tabindex="0" style="text-align: center; position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mtext&gt;lift&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mtext&gt;confidence&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;/mfrac&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mtext&gt;range:&amp;#xA0;&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;&amp;#x221E;&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-90" style="width: 27.371em; display: inline-block;"><span style="display: inline-block; position: relative; width: 22.079em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(0.759em, 1021.98em, 3.48em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-91"><span class="mtext" id="MathJax-Span-92" style="font-family: MathJax_Main;">lift</span><span class="mo" id="MathJax-Span-93" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-94" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-95" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-96" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-97" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-98" style="font-family: MathJax_Main; padding-left: 0.305em;">=</span><span class="mfrac" id="MathJax-Span-99" style="padding-left: 0.305em;"><span style="display: inline-block; position: relative; width: 8.571em; height: 0px; margin-right: 0.103em; margin-left: 0.103em;"><span style="position: absolute; clip: rect(3.077em, 1008.32em, 4.388em, -999.997em); top: -4.685em; left: 50%; margin-left: -4.231em;"><span class="mrow" id="MathJax-Span-100"><span class="mtext" id="MathJax-Span-101" style="font-family: MathJax_Main;">confidence</span><span class="mo" id="MathJax-Span-102" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-103" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-104" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-105" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-106" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(3.077em, 1004.79em, 4.388em, -999.997em); top: -3.274em; left: 50%; margin-left: -2.417em;"><span class="mrow" id="MathJax-Span-107"><span class="mtext" id="MathJax-Span-108" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-109" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-110" style="font-family: MathJax_Math-italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-111" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(0.859em, 1008.57em, 1.212em, -999.997em); top: -1.258em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 8.571em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.061em;"></span></span></span></span><span class="mo" id="MathJax-Span-112" style="font-family: MathJax_Main;">,</span><span class="mspace" id="MathJax-Span-113" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-114" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-115" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mtext" id="MathJax-Span-116" style="font-family: MathJax_Main; padding-left: 0.154em;">range:&nbsp;</span><span class="mo" id="MathJax-Span-117" style="font-family: MathJax_Main;">[</span><span class="mn" id="MathJax-Span-118" style="font-family: MathJax_Main;">0</span><span class="mo" id="MathJax-Span-119" style="font-family: MathJax_Main;">,</span><span class="mi" id="MathJax-Span-120" style="font-family: MathJax_Main; padding-left: 0.154em;">∞</span><span class="mo" id="MathJax-Span-121" style="font-family: MathJax_Main;">]</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -1.247em; border-left: 0px solid; width: 0px; height: 3.128em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>lift</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mtext>confidence</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><mrow><mtext>support</mtext><mo stretchy="false">(</mo><mi>C</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>,</mo><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mtext>range:&nbsp;</mtext><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi mathvariant="normal">∞</mi><mo stretchy="false">]</mo></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-8">\text{lift}(A\rightarrow C) = \frac{\text{confidence}(A\rightarrow C)}{\text{support}(C)}, \;\;\; \text{range: } [0, \infty]</script>
+</p>
+<ul>
+<li>introduced in [4]</li>
+</ul>
+<p>The lift metric is commonly used to measure how much more often the antecedent and consequent of a rule A-&gt;C occur together than we would expect if they were statistically independent. If A and C are independent, the Lift score will be exactly 1.</p>
+<h4 id="leverage">'leverage':</h4>
+<p>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-9-Frame" tabindex="0" style="text-align: center; position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mtext&gt;levarage&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;&amp;#x00D7;&lt;/mo&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mtext&gt;range:&amp;#xA0;&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-122" style="width: 43.753em; display: inline-block;"><span style="display: inline-block; position: relative; width: 35.285em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.464em, 1035.18em, 2.775em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-123"><span class="mtext" id="MathJax-Span-124" style="font-family: MathJax_Main;">levarage</span><span class="mo" id="MathJax-Span-125" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-126" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-127" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-128" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-129" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-130" style="font-family: MathJax_Main; padding-left: 0.305em;">=</span><span class="mtext" id="MathJax-Span-131" style="font-family: MathJax_Main; padding-left: 0.305em;">support</span><span class="mo" id="MathJax-Span-132" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-133" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-134" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-135" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-136" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-137" style="font-family: MathJax_Main; padding-left: 0.204em;">−</span><span class="mtext" id="MathJax-Span-138" style="font-family: MathJax_Main; padding-left: 0.204em;">support</span><span class="mo" id="MathJax-Span-139" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-140" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-141" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-142" style="font-family: MathJax_Main; padding-left: 0.204em;">×</span><span class="mtext" id="MathJax-Span-143" style="font-family: MathJax_Main; padding-left: 0.204em;">support</span><span class="mo" id="MathJax-Span-144" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-145" style="font-family: MathJax_Math-italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-146" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-147" style="font-family: MathJax_Main;">,</span><span class="mspace" id="MathJax-Span-148" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-149" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-150" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mtext" id="MathJax-Span-151" style="font-family: MathJax_Main; padding-left: 0.154em;">range:&nbsp;</span><span class="mo" id="MathJax-Span-152" style="font-family: MathJax_Main;">[</span><span class="mo" id="MathJax-Span-153" style="font-family: MathJax_Main;">−</span><span class="mn" id="MathJax-Span-154" style="font-family: MathJax_Main;">1</span><span class="mo" id="MathJax-Span-155" style="font-family: MathJax_Main;">,</span><span class="mn" id="MathJax-Span-156" style="font-family: MathJax_Main; padding-left: 0.154em;">1</span><span class="mo" id="MathJax-Span-157" style="font-family: MathJax_Main;">]</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left: 0px solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>levarage</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>−</mo><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo><mo>×</mo><mtext>support</mtext><mo stretchy="false">(</mo><mi>C</mi><mo stretchy="false">)</mo><mo>,</mo><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mtext>range:&nbsp;</mtext><mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-9">\text{levarage}(A\rightarrow C) = \text{support}(A\rightarrow C) - \text{support}(A) \times \text{support}(C), \;\;\; \text{range: } [-1, 1]</script>
+</p>
+<ul>
+<li>introduced in [5]</li>
+</ul>
+<p>Leverage computes the difference between the observed frequency of A and C appearing together and the frequency that would be expected if A and C were independent. A leverage value of 0 indicates independence.</p>
+<h4 id="conviction">'conviction':</h4>
+<p>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-10-Frame" tabindex="0" style="text-align: center; position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mtext&gt;conviction&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mtext&gt;confidence&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;/mfrac&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mtext&gt;range:&amp;#xA0;&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;&amp;#x221E;&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-158" style="width: 33.47em; display: inline-block;"><span style="display: inline-block; position: relative; width: 26.968em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(0.759em, 1026.87em, 3.48em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-159"><span class="mtext" id="MathJax-Span-160" style="font-family: MathJax_Main;">conviction</span><span class="mo" id="MathJax-Span-161" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-162" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-163" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-164" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-165" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-166" style="font-family: MathJax_Main; padding-left: 0.305em;">=</span><span class="mfrac" id="MathJax-Span-167" style="padding-left: 0.305em;"><span style="display: inline-block; position: relative; width: 10.234em; height: 0px; margin-right: 0.103em; margin-left: 0.103em;"><span style="position: absolute; clip: rect(3.077em, 1006.45em, 4.388em, -999.997em); top: -4.685em; left: 50%; margin-left: -3.274em;"><span class="mrow" id="MathJax-Span-168"><span class="mn" id="MathJax-Span-169" style="font-family: MathJax_Main;">1</span><span class="mo" id="MathJax-Span-170" style="font-family: MathJax_Main; padding-left: 0.204em;">−</span><span class="mtext" id="MathJax-Span-171" style="font-family: MathJax_Main; padding-left: 0.204em;">support</span><span class="mo" id="MathJax-Span-172" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-173" style="font-family: MathJax_Math-italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-174" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(3.077em, 1010.03em, 4.388em, -999.997em); top: -3.274em; left: 50%; margin-left: -5.038em;"><span class="mrow" id="MathJax-Span-175"><span class="mn" id="MathJax-Span-176" style="font-family: MathJax_Main;">1</span><span class="mo" id="MathJax-Span-177" style="font-family: MathJax_Main; padding-left: 0.204em;">−</span><span class="mtext" id="MathJax-Span-178" style="font-family: MathJax_Main; padding-left: 0.204em;">confidence</span><span class="mo" id="MathJax-Span-179" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-180" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-181" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-182" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-183" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(0.859em, 1010.23em, 1.212em, -999.997em); top: -1.258em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 10.234em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.061em;"></span></span></span></span><span class="mo" id="MathJax-Span-184" style="font-family: MathJax_Main;">,</span><span class="mspace" id="MathJax-Span-185" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-186" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-187" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mtext" id="MathJax-Span-188" style="font-family: MathJax_Main; padding-left: 0.154em;">range:&nbsp;</span><span class="mo" id="MathJax-Span-189" style="font-family: MathJax_Main;">[</span><span class="mn" id="MathJax-Span-190" style="font-family: MathJax_Main;">0</span><span class="mo" id="MathJax-Span-191" style="font-family: MathJax_Main;">,</span><span class="mi" id="MathJax-Span-192" style="font-family: MathJax_Main; padding-left: 0.154em;">∞</span><span class="mo" id="MathJax-Span-193" style="font-family: MathJax_Main;">]</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -1.247em; border-left: 0px solid; width: 0px; height: 3.128em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>conviction</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mtext>support</mtext><mo stretchy="false">(</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><mrow><mn>1</mn><mo>−</mo><mtext>confidence</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>,</mo><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mtext>range:&nbsp;</mtext><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi mathvariant="normal">∞</mi><mo stretchy="false">]</mo></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-10">\text{conviction}(A\rightarrow C) = \frac{1 - \text{support}(C)}{1 - \text{confidence}(A\rightarrow C)}, \;\;\; \text{range: } [0, \infty]</script>
+</p>
+<ul>
+<li>introduced in [6]</li>
+</ul>
+<p>A high conviction value means that the consequent is highly depending on the antecedent. For instance, in the case of a perfect confidence score, the denominator becomes 0 (due to 1 - 1) for which the conviction score is defined as 'inf'. Similar to lift, if items are independent, the conviction is 1.</p>
+<h2 id="references">References</h2>
+<p>[1] Tan, Steinbach, Kumar. Introduction to Data Mining. Pearson New International Edition. Harlow: Pearson Education Ltd., 2014. (pp. 327-414).</p>
+<p>[2] Michael Hahsler, http://michael.hahsler.net/research/association_rules/measures.html</p>
+<p>[3] R. Agrawal, T. Imielinski, and A. Swami. Mining associations between sets of items in large databases. In Proc. of the ACM SIGMOD Int'l Conference on Management of Data, pages 207-216, Washington D.C., May 1993</p>
+<p>[4] S. Brin, R. Motwani, J. D. Ullman, and S. Tsur. Dynamic itemset counting and implication rules for market basket data</p>
+<p>[5]  Piatetsky-Shapiro, G., Discovery, analysis, and presentation of strong rules. Knowledge Discovery in Databases, 1991: p. 229-248.</p>
+<p>[6] Sergey Brin, Rajeev Motwani, Jeffrey D. Ullman, and Shalom Turk. Dynamic itemset counting and implication rules for market basket data. In SIGMOD 1997, Proceedings ACM SIGMOD International Conference on Management of Data, pages 255-264, Tucson, Arizona, USA, May 1997</p>
+<h2 id="example-1-generating-association-rules-from-frequent-itemsets">Example 1 -- Generating Association Rules from Frequent Itemsets</h2>
+<p>The <code>generate_rules</code> takes dataframes of frequent itemsets as produced by the <code>apriori</code>, <code>fpgrowth</code>, or <code>fpmax</code> functions in <em>mlxtend.association</em>. To demonstrate the usage of the <code>generate_rules</code> method, we first create a pandas <code>DataFrame</code> of frequent itemsets as generated by the <a href="http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/fpgrowth/"><code>fpgrowth</code></a> function:</p>
+<pre><code class="language-python hljs"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">from</span> mlxtend.preprocessing <span class="hljs-keyword">import</span> TransactionEncoder
+<span class="hljs-keyword">from</span> mlxtend.frequent_patterns <span class="hljs-keyword">import</span> apriori, fpmax, fpgrowth
+
+
+dataset = [[<span class="hljs-string">'Milk'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Nutmeg'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Eggs'</span>, <span class="hljs-string">'Yogurt'</span>],
+           [<span class="hljs-string">'Dill'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Nutmeg'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Eggs'</span>, <span class="hljs-string">'Yogurt'</span>],
+           [<span class="hljs-string">'Milk'</span>, <span class="hljs-string">'Apple'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Eggs'</span>],
+           [<span class="hljs-string">'Milk'</span>, <span class="hljs-string">'Unicorn'</span>, <span class="hljs-string">'Corn'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Yogurt'</span>],
+           [<span class="hljs-string">'Corn'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Ice cream'</span>, <span class="hljs-string">'Eggs'</span>]]
+
+te = TransactionEncoder()
+te_ary = te.fit(dataset).transform(dataset)
+df = pd.DataFrame(te_ary, columns=te.columns_)
+
+frequent_itemsets = fpgrowth(df, min_support=<span class="hljs-number">0.6</span>, use_colnames=<span class="hljs-keyword">True</span>)
+<span class="hljs-comment">### alternatively:</span>
+<span class="hljs-comment">#frequent_itemsets = apriori(df, min_support=0.6, use_colnames=True)</span>
+<span class="hljs-comment">#frequent_itemsets = fpmax(df, min_support=0.6, use_colnames=True)</span>
+
+frequent_itemsets
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>support</th>
+      <th>itemsets</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>(Kidney Beans)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.8</td>
+      <td>(Eggs)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.6</td>
+      <td>(Yogurt)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.6</td>
+      <td>(Onion)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.6</td>
+      <td>(Milk)</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.8</td>
+      <td>(Kidney Beans, Eggs)</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.6</td>
+      <td>(Kidney Beans, Yogurt)</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.6</td>
+      <td>(Onion, Eggs)</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.6</td>
+      <td>(Onion, Kidney Beans)</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.6</td>
+      <td>(Onion, Kidney Beans, Eggs)</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.6</td>
+      <td>(Kidney Beans, Milk)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The <code>generate_rules()</code> function allows you to (1) specify your metric of interest and (2) the according threshold. Currently implemented measures are <strong>confidence</strong> and <strong>lift</strong>. Let's say you are interested in rules derived from the frequent itemsets only if the level of confidence is above the 70 percent threshold (<code>min_threshold=0.7</code>):</p>
+<pre><code class="language-python hljs"><span class="hljs-keyword">from</span> mlxtend.frequent_patterns <span class="hljs-keyword">import</span> association_rules
+
+association_rules(frequent_itemsets, metric=<span class="hljs-string">"confidence"</span>, min_threshold=<span class="hljs-number">0.7</span>)
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(Kidney Beans)</td>
+      <td>(Eggs)</td>
+      <td>1.0</td>
+      <td>0.8</td>
+      <td>0.8</td>
+      <td>0.80</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(Eggs)</td>
+      <td>(Kidney Beans)</td>
+      <td>0.8</td>
+      <td>1.0</td>
+      <td>0.8</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(Yogurt)</td>
+      <td>(Kidney Beans)</td>
+      <td>0.6</td>
+      <td>1.0</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(Onion)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(Onion)</td>
+      <td>(Kidney Beans)</td>
+      <td>0.6</td>
+      <td>1.0</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>(Onion, Kidney Beans)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>(Onion, Eggs)</td>
+      <td>(Kidney Beans)</td>
+      <td>0.6</td>
+      <td>1.0</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>(Onion)</td>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>(Eggs)</td>
+      <td>(Onion, Kidney Beans)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>(Milk)</td>
+      <td>(Kidney Beans)</td>
+      <td>0.6</td>
+      <td>1.0</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>inf</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="example-2-rule-generation-and-selection-criteria">Example 2 -- Rule Generation and Selection Criteria</h2>
+<p>If you are interested in rules according to a different metric of interest, you can simply adjust the <code>metric</code> and <code>min_threshold</code> arguments . E.g. if you are only interested in rules that have a lift score of &gt;= 1.2, you would do the following:</p>
+<pre><code class="language-python hljs">rules = association_rules(frequent_itemsets, metric=<span class="hljs-string">"lift"</span>, min_threshold=<span class="hljs-number">1.2</span>)
+rules
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(Onion)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(Onion, Kidney Beans)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(Onion)</td>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(Eggs)</td>
+      <td>(Onion, Kidney Beans)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Pandas <code>DataFrames</code> make it easy to filter the results further. Let's say we are ony interested in rules that satisfy the following criteria:</p>
+<ol>
+<li>at least 2 antecedents</li>
+<li>a confidence &gt; 0.75</li>
+<li>a lift score &gt; 1.2</li>
+</ol>
+<p>We could compute the antecedent length as follows:</p>
+<pre><code class="language-python hljs">rules[<span class="hljs-string">"antecedent_len"</span>] = rules[<span class="hljs-string">"antecedents"</span>].apply(<span class="hljs-keyword">lambda</span> x: len(x))
+rules
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+      <th>antecedent_len</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(Onion)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(Onion, Kidney Beans)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(Onion)</td>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(Eggs)</td>
+      <td>(Onion, Kidney Beans)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Then, we can use pandas' selection syntax as shown below:</p>
+<pre><code class="language-python hljs">rules[ (rules[<span class="hljs-string">'antecedent_len'</span>] &gt;= <span class="hljs-number">2</span>) &amp;
+       (rules[<span class="hljs-string">'confidence'</span>] &gt; <span class="hljs-number">0.75</span>) &amp;
+       (rules[<span class="hljs-string">'lift'</span>] &gt; <span class="hljs-number">1.2</span>) ]
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+      <th>antecedent_len</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>(Onion, Kidney Beans)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.0</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Similarly, using the Pandas API, we can select entries based on the "antecedents" or "consequents" columns:</p>
+<pre><code class="language-python hljs">rules[rules[<span class="hljs-string">'antecedents'</span>] == {<span class="hljs-string">'Eggs'</span>, <span class="hljs-string">'Kidney Beans'</span>}]
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+      <th>antecedent_len</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>Frozensets</strong></p>
+<p>Note that the entries in the "itemsets" column are of type <code>frozenset</code>, which is built-in Python type that is similar to a Python <code>set</code> but immutable, which makes it more efficient for certain query or comparison operations (https://docs.python.org/3.6/library/stdtypes.html#frozenset). Since <code>frozenset</code>s are sets, the item order does not matter. I.e., the query</p>
+<p><code>rules[rules['antecedents'] == {'Eggs', 'Kidney Beans'}]</code></p>
+<p>is equivalent to any of the following three</p>
+<ul>
+<li><code>rules[rules['antecedents'] == {'Kidney Beans', 'Eggs'}]</code></li>
+<li><code>rules[rules['antecedents'] == frozenset(('Eggs', 'Kidney Beans'))]</code></li>
+<li><code>rules[rules['antecedents'] == frozenset(('Kidney Beans', 'Eggs'))]</code></li>
+</ul>
+<h2 id="example-3-frequent-itemsets-with-incomplete-antecedent-and-consequent-information">Example 3 -- Frequent Itemsets with Incomplete Antecedent and Consequent Information</h2>
+<p>Most metrics computed by <code>association_rules</code> depends on the consequent and antecedent support score of a given rule provided in the frequent itemset input DataFrame. Consider the following example:</p>
+<pre><code class="language-python hljs"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+
+dict = {<span class="hljs-string">'itemsets'</span>: [[<span class="hljs-string">'177'</span>, <span class="hljs-string">'176'</span>], [<span class="hljs-string">'177'</span>, <span class="hljs-string">'179'</span>],
+                     [<span class="hljs-string">'176'</span>, <span class="hljs-string">'178'</span>], [<span class="hljs-string">'176'</span>, <span class="hljs-string">'179'</span>],
+                     [<span class="hljs-string">'93'</span>, <span class="hljs-string">'100'</span>], [<span class="hljs-string">'177'</span>, <span class="hljs-string">'178'</span>],
+                     [<span class="hljs-string">'177'</span>, <span class="hljs-string">'176'</span>, <span class="hljs-string">'178'</span>]],
+        <span class="hljs-string">'support'</span>:[<span class="hljs-number">0.253623</span>, <span class="hljs-number">0.253623</span>, <span class="hljs-number">0.217391</span>,
+                   <span class="hljs-number">0.217391</span>, <span class="hljs-number">0.181159</span>, <span class="hljs-number">0.108696</span>, <span class="hljs-number">0.108696</span>]}
+
+freq_itemsets = pd.DataFrame(dict)
+freq_itemsets
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>itemsets</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[177, 176]</td>
+      <td>0.253623</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[177, 179]</td>
+      <td>0.253623</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[176, 178]</td>
+      <td>0.217391</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[176, 179]</td>
+      <td>0.217391</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[93, 100]</td>
+      <td>0.181159</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[177, 178]</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>[177, 176, 178]</td>
+      <td>0.108696</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Note that this is a "cropped" DataFrame that doesn't contain the support values of the item subsets. This can create problems if we want to compute the association rule metrics for, e.g., <code>176 =&gt; 177</code>.</p>
+<p>For example, the confidence is computed as</p>
+<p>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-11-Frame" tabindex="0" style="text-align: center; position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mtext&gt;confidence&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;/mfrac&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mtext&gt;range:&amp;#xA0;&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-194" style="width: 29.337em; display: inline-block;"><span style="display: inline-block; position: relative; width: 23.642em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(0.759em, 1023.54em, 3.48em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-195"><span class="mtext" id="MathJax-Span-196" style="font-family: MathJax_Main;">confidence</span><span class="mo" id="MathJax-Span-197" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-198" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-199" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-200" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-201" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-202" style="font-family: MathJax_Main; padding-left: 0.305em;">=</span><span class="mfrac" id="MathJax-Span-203" style="padding-left: 0.305em;"><span style="display: inline-block; position: relative; width: 7.361em; height: 0px; margin-right: 0.103em; margin-left: 0.103em;"><span style="position: absolute; clip: rect(3.077em, 1007.16em, 4.388em, -999.997em); top: -4.685em; left: 50%; margin-left: -3.627em;"><span class="mrow" id="MathJax-Span-204"><span class="mtext" id="MathJax-Span-205" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-206" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-207" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-208" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-209" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-210" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(3.077em, 1004.79em, 4.388em, -999.997em); top: -3.274em; left: 50%; margin-left: -2.417em;"><span class="mrow" id="MathJax-Span-211"><span class="mtext" id="MathJax-Span-212" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-213" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-214" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-215" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 3.984em;"></span></span><span style="position: absolute; clip: rect(0.859em, 1007.36em, 1.212em, -999.997em); top: -1.258em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 7.361em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.061em;"></span></span></span></span><span class="mo" id="MathJax-Span-216" style="font-family: MathJax_Main;">,</span><span class="mspace" id="MathJax-Span-217" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-218" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-219" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mtext" id="MathJax-Span-220" style="font-family: MathJax_Main; padding-left: 0.154em;">range:&nbsp;</span><span class="mo" id="MathJax-Span-221" style="font-family: MathJax_Main;">[</span><span class="mn" id="MathJax-Span-222" style="font-family: MathJax_Main;">0</span><span class="mo" id="MathJax-Span-223" style="font-family: MathJax_Main;">,</span><span class="mn" id="MathJax-Span-224" style="font-family: MathJax_Main; padding-left: 0.154em;">1</span><span class="mo" id="MathJax-Span-225" style="font-family: MathJax_Main;">]</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -1.247em; border-left: 0px solid; width: 0px; height: 3.128em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>confidence</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><mrow><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>,</mo><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mtext>range:&nbsp;</mtext><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-11">\text{confidence}(A\rightarrow C) = \frac{\text{support}(A\rightarrow C)}{\text{support}(A)}, \;\;\; \text{range: } [0, 1]</script>
+</p>
+<p>But we do not have <span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-12-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-226" style="width: 6.101em; display: inline-block;"><span style="display: inline-block; position: relative; width: 4.892em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.464em, 1004.79em, 2.775em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-227"><span class="mtext" id="MathJax-Span-228" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-229" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-230" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-231" style="font-family: MathJax_Main;">)</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left: 0px solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></math></span></span><script type="math/tex" id="MathJax-Element-12">\text{support}(A)</script>. All we know about "A"'s support is that it is at least 0.253623.</p>
+<p>In these scenarios, where not all metric's can be computed, due to incomplete input DataFrames, you can use the <code>support_only=True</code> option, which will only compute the support column of a given rule that does not require as much info:</p>
+<p>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-13-Frame" tabindex="0" style="text-align: center; position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x2192;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mtext&gt;support&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo&gt;&amp;#x222A;&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mtext&gt;range:&amp;#xA0;&lt;/mtext&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-232" style="width: 26.817em; display: inline-block;"><span style="display: inline-block; position: relative; width: 21.626em; height: 0px; font-size: 124%;"><span style="position: absolute; clip: rect(1.464em, 1021.52em, 2.775em, -999.997em); top: -2.366em; left: 0em;"><span class="mrow" id="MathJax-Span-233"><span class="mtext" id="MathJax-Span-234" style="font-family: MathJax_Main;">support</span><span class="mo" id="MathJax-Span-235" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-236" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-237" style="font-family: MathJax_Main; padding-left: 0.305em;">→</span><span class="mi" id="MathJax-Span-238" style="font-family: MathJax_Math-italic; padding-left: 0.305em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-239" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-240" style="font-family: MathJax_Main; padding-left: 0.305em;">=</span><span class="mtext" id="MathJax-Span-241" style="font-family: MathJax_Main; padding-left: 0.305em;">support</span><span class="mo" id="MathJax-Span-242" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-243" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-244" style="font-family: MathJax_Main; padding-left: 0.204em;">∪</span><span class="mi" id="MathJax-Span-245" style="font-family: MathJax_Math-italic; padding-left: 0.204em;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-246" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-247" style="font-family: MathJax_Main;">,</span><span class="mspace" id="MathJax-Span-248" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-249" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mspace" id="MathJax-Span-250" style="height: 0em; vertical-align: 0em; width: 0.305em; display: inline-block; overflow: hidden;"></span><span class="mtext" id="MathJax-Span-251" style="font-family: MathJax_Main; padding-left: 0.154em;">range:&nbsp;</span><span class="mo" id="MathJax-Span-252" style="font-family: MathJax_Main;">[</span><span class="mn" id="MathJax-Span-253" style="font-family: MathJax_Main;">0</span><span class="mo" id="MathJax-Span-254" style="font-family: MathJax_Main;">,</span><span class="mn" id="MathJax-Span-255" style="font-family: MathJax_Main; padding-left: 0.154em;">1</span><span class="mo" id="MathJax-Span-256" style="font-family: MathJax_Main;">]</span></span><span style="display: inline-block; width: 0px; height: 2.371em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left: 0px solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">→</mo><mi>C</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>support</mtext><mo stretchy="false">(</mo><mi>A</mi><mo>∪</mo><mi>C</mi><mo stretchy="false">)</mo><mo>,</mo><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mspace width="thickmathspace"></mspace><mtext>range:&nbsp;</mtext><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-13">\text{support}(A\rightarrow C) = \text{support}(A \cup C), \;\;\; \text{range: } [0, 1]</script>
+</p>
+<p>"NaN's" will be assigned to all other metric columns:</p>
+<pre><code class="language-python hljs"><span class="hljs-keyword">from</span> mlxtend.frequent_patterns <span class="hljs-keyword">import</span> association_rules
+
+res = association_rules(freq_itemsets, support_only=<span class="hljs-keyword">True</span>, min_threshold=<span class="hljs-number">0.1</span>)
+res
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(176)</td>
+      <td>(177)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.253623</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(177)</td>
+      <td>(176)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.253623</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(179)</td>
+      <td>(177)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.253623</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(177)</td>
+      <td>(179)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.253623</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(178)</td>
+      <td>(176)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.217391</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(176)</td>
+      <td>(178)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.217391</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>(176)</td>
+      <td>(179)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.217391</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>(179)</td>
+      <td>(176)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.217391</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>(100)</td>
+      <td>(93)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.181159</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>(93)</td>
+      <td>(100)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.181159</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>(178)</td>
+      <td>(177)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>(177)</td>
+      <td>(178)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>(178, 176)</td>
+      <td>(177)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>(178, 177)</td>
+      <td>(176)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>(176, 177)</td>
+      <td>(178)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>(178)</td>
+      <td>(176, 177)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>(176)</td>
+      <td>(178, 177)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>(177)</td>
+      <td>(178, 176)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.108696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>To clean up the representation, you may want to do the following:</p>
+<pre><code class="language-python hljs">res = res[[<span class="hljs-string">'antecedents'</span>, <span class="hljs-string">'consequents'</span>, <span class="hljs-string">'support'</span>]]
+res
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(176)</td>
+      <td>(177)</td>
+      <td>0.253623</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(177)</td>
+      <td>(176)</td>
+      <td>0.253623</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(179)</td>
+      <td>(177)</td>
+      <td>0.253623</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(177)</td>
+      <td>(179)</td>
+      <td>0.253623</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(178)</td>
+      <td>(176)</td>
+      <td>0.217391</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(176)</td>
+      <td>(178)</td>
+      <td>0.217391</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>(176)</td>
+      <td>(179)</td>
+      <td>0.217391</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>(179)</td>
+      <td>(176)</td>
+      <td>0.217391</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>(100)</td>
+      <td>(93)</td>
+      <td>0.181159</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>(93)</td>
+      <td>(100)</td>
+      <td>0.181159</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>(178)</td>
+      <td>(177)</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>(177)</td>
+      <td>(178)</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>(178, 176)</td>
+      <td>(177)</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>(178, 177)</td>
+      <td>(176)</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>(176, 177)</td>
+      <td>(178)</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>(178)</td>
+      <td>(176, 177)</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>(176)</td>
+      <td>(178, 177)</td>
+      <td>0.108696</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>(177)</td>
+      <td>(178, 176)</td>
+      <td>0.108696</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="example-4-pruning-association-rules">Example 4 -- Pruning Association Rules</h2>
+<p>There is no specific API for pruning. Instead, the pandas API can be used on the resulting data frame to remove individual rows. E.g., suppose we have the following rules:</p>
+<pre><code class="language-python hljs"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">from</span> mlxtend.preprocessing <span class="hljs-keyword">import</span> TransactionEncoder
+<span class="hljs-keyword">from</span> mlxtend.frequent_patterns <span class="hljs-keyword">import</span> apriori, fpmax, fpgrowth
+<span class="hljs-keyword">from</span> mlxtend.frequent_patterns <span class="hljs-keyword">import</span> association_rules
+
+
+dataset = [[<span class="hljs-string">'Milk'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Nutmeg'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Eggs'</span>, <span class="hljs-string">'Yogurt'</span>],
+           [<span class="hljs-string">'Dill'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Nutmeg'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Eggs'</span>, <span class="hljs-string">'Yogurt'</span>],
+           [<span class="hljs-string">'Milk'</span>, <span class="hljs-string">'Apple'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Eggs'</span>],
+           [<span class="hljs-string">'Milk'</span>, <span class="hljs-string">'Unicorn'</span>, <span class="hljs-string">'Corn'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Yogurt'</span>],
+           [<span class="hljs-string">'Corn'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Kidney Beans'</span>, <span class="hljs-string">'Ice cream'</span>, <span class="hljs-string">'Eggs'</span>]]
+
+te = TransactionEncoder()
+te_ary = te.fit(dataset).transform(dataset)
+df = pd.DataFrame(te_ary, columns=te.columns_)
+
+frequent_itemsets = fpgrowth(df, min_support=<span class="hljs-number">0.6</span>, use_colnames=<span class="hljs-keyword">True</span>)
+rules = association_rules(frequent_itemsets, metric=<span class="hljs-string">"lift"</span>, min_threshold=<span class="hljs-number">1.2</span>)
+rules
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(Onion)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(Onion, Kidney Beans)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(Onion)</td>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(Eggs)</td>
+      <td>(Onion, Kidney Beans)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>and we want to remove the rule "(Onion, Kidney Beans) -&gt; (Eggs)". In order to to this, we can define selection masks and remove this row as follows:</p>
+<pre><code class="language-python hljs">antecedent_sele = rules[<span class="hljs-string">'antecedents'</span>] == frozenset({<span class="hljs-string">'Onion'</span>, <span class="hljs-string">'Kidney Beans'</span>}) <span class="hljs-comment"># or  frozenset({'Kidney Beans', 'Onion'})</span>
+consequent_sele = rules[<span class="hljs-string">'consequents'</span>] == frozenset({<span class="hljs-string">'Eggs'</span>})
+final_sele = (antecedent_sele &amp; consequent_sele)
+
+rules.loc[ ~final_sele ]
+</code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(Onion)</td>
+      <td>(Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>(Onion)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(Onion)</td>
+      <td>(Kidney Beans, Eggs)</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>1.00</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>inf</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(Eggs)</td>
+      <td>(Onion, Kidney Beans)</td>
+      <td>0.8</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.75</td>
+      <td>1.25</td>
+      <td>0.12</td>
+      <td>1.6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="api">API</h2>
+<p><em>association_rules(df, metric='confidence', min_threshold=0.8, support_only=False)</em></p>
+<p>Generates a DataFrame of association rules including the
+    metrics 'score', 'confidence', and 'lift'</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>df</code> : pandas DataFrame</p>
+<p>pandas DataFrame of frequent itemsets
+with columns ['support', 'itemsets']</p>
+</li>
+<li>
+<p><code>metric</code> : string (default: 'confidence')</p>
+<p>Metric to evaluate if a rule is of interest.
+<strong>Automatically set to 'support' if <code>support_only=True</code>.</strong>
+Otherwise, supported metrics are 'support', 'confidence', 'lift',</p>
+</li>
+</ul>
+<p>'leverage', and 'conviction'
+    These metrics are computed as follows:</p>
+<pre><code class="hljs stylus">- <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(A-&gt;C)</span></span> = <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(A+C)</span></span> [aka <span class="hljs-string">'support'</span>], range: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>]
+
+- <span class="hljs-function"><span class="hljs-title">confidence</span><span class="hljs-params">(A-&gt;C)</span></span> = <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(A+C)</span></span> / <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(A)</span></span>, range: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>]
+
+- <span class="hljs-function"><span class="hljs-title">lift</span><span class="hljs-params">(A-&gt;C)</span></span> = <span class="hljs-function"><span class="hljs-title">confidence</span><span class="hljs-params">(A-&gt;C)</span></span> / <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(C)</span></span>, range: [<span class="hljs-number">0</span>, inf]
+
+- <span class="hljs-function"><span class="hljs-title">leverage</span><span class="hljs-params">(A-&gt;C)</span></span> = <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(A-&gt;C)</span></span> - <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(A)</span></span>*<span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(C)</span></span>,
+range: [-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>]
+
+- conviction = [<span class="hljs-number">1</span> - <span class="hljs-function"><span class="hljs-title">support</span><span class="hljs-params">(C)</span></span>] / [<span class="hljs-number">1</span> - <span class="hljs-function"><span class="hljs-title">confidence</span><span class="hljs-params">(A-&gt;C)</span></span>],
+range: [<span class="hljs-number">0</span>, inf]
+</code></pre>
+<ul>
+<li>
+<p><code>min_threshold</code> : float (default: 0.8)</p>
+<p>Minimal threshold for the evaluation metric,
+via the <code>metric</code> parameter,
+to decide whether a candidate rule is of interest.</p>
+</li>
+<li>
+<p><code>support_only</code> : bool (default: False)</p>
+<p>Only computes the rule support and fills the other
+metric columns with NaNs. This is useful if:</p>
+<p>a) the input DataFrame is incomplete, e.g., does
+not contain support values for all rule antecedents
+and consequents</p>
+<p>b) you simply want to speed up the computation because
+you don't need the other metrics.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>pandas DataFrame with columns "antecedents" and "consequents"
+    that store itemsets, plus the scoring metric columns:
+    "antecedent support", "consequent support",
+    "support", "confidence", "lift",
+    "leverage", "conviction"
+    of all rules for which
+    metric(rule) &gt;= min_threshold.
+    Each entry in the "antecedents" and "consequents" columns are
+    of type <code>frozenset</code>, which is a Python built-in type that
+    behaves similarly to sets except that it is immutable
+    (For more info, see
+    https://docs.python.org/3.6/library/stdtypes.html#frozenset).</p>
+<p><strong>Examples</strong></p>
+<p>For usage examples, please see
+    http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/</p></div>
+        
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright © 2014-2020 <a href="http://sebastianraschka.com/">Sebastian Raschka</a><br></small>
+        
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small></p>
+    </footer>
+
+    <script src="./Association rules - mlxtend_files/jquery-1.10.2.min.js.download"></script>
+    <script src="./Association rules - mlxtend_files/bootstrap-3.0.3.min.js.download"></script>
+    <script src="./Association rules - mlxtend_files/highlight.pack.js.download"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '../../..';
+    </script>
+    <script data-main="../../../mkdocs/js/search.js" src="./Association rules - mlxtend_files/require.js.download"></script>
+    <script src="./Association rules - mlxtend_files/base.js.download"></script>
+    <script src="./Association rules - mlxtend_files/MathJax.js.download" id=""></script>
+    <script src="./Association rules - mlxtend_files/mathjaxhelper.js.download"></script>
+    <script src="./Association rules - mlxtend_files/main.js.download"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: MathJax_Main, sans-serif;"></div></div></body></html>

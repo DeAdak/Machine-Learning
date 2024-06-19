@@ -1,0 +1,16 @@
+Concrete Strength
+Lasso: alpha=[0,0.001,0.1,0.5,0.8,1,1.5,2]
+Ridge: alpha=[0,0.001,0.1,0.5,0.8,1,1.5,2]
+Elasticnet: alpha=[0,0.001,0.1,0.5,0.8,1,1.5,2], l1_ratio = [0.001,0.5,0.7,1]
+---------------------------------------------------
+Cases\Medical Cost Personal\insurance.csv
+R: CHARGES
+Linear Regression (cross_val_score)
+
+Poly(degree = 2,3)
+(cross_val_score with linear reg)
+Grid Search CV:
+with/without polynomial
+Lasso: alpha=[0,0.001,0.1,0.5,0.8,1,1.5,2]
+Ridge: alpha=[0,0.001,0.1,0.5,0.8,1,1.5,2]
+Elasticnet: alpha=[0,0.001,0.1,0.5,0.8,1,1.5,2],l1_ratio = [0.001,0.5,0.7,1]

@@ -1,0 +1,6 @@
+Cases\Satellite Imaging
+params = {'multi_class':['multinomial','ovr'],'solver':['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga']}
+log_reg = LogisticRegression(random_state=2022)
+scoring='roc_auc_ovr'
+
+scoring='neg_log_loss'

@@ -1,0 +1,31 @@
+1. cases/sonar.csv
+Logistic, Gaussian NB
+R : Class
+tune for roc auc
+
+find top 3 influential features
+ans : v11 v16 v4
+
+
+
+2. cases/glass
+kfold CV Linear DA
+kfold CV Quadratic DA
+SVM - Linear GridSearchCV C = [0,0.01,0.1,0.2,0.5,1]
+SVM - Radial GridSearchCV C = [0,0.01,0.1,0.2,0.5,1]
+& gamma = [0.1,0.5,1]
+Decision Tree Classifier with GridSearchCV
+	depth_range=[None,8,10]
+	minsplit=[2,5,10]
+	minleaf=[1,5,10]
+
+
+3. cases/Energy Efficiency/ENB2012_data
+Y1 & Y2
+R2 SCORE
+Linear Regression kfold CV
+ElasticNet alpha = [0,0.1,0.5,1,1.5], l1_ratio = [0,0.5,1]
+DecisionTreeRegressor
+	depth_range=[None,8,3]
+	minsplit=[2,5,10]
+	minleaf=[1,5,10]

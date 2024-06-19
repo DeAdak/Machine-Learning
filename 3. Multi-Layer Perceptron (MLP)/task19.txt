@@ -1,0 +1,29 @@
+https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.04977&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false
+
+Cases/Bankruptcy
+D - Response
+Features - all other except NO
+MLP Classifier
+initial learning rate = [0.001,0.1,0.4,0.5]
+learning rate = ['constant','invscaling','adaptive']
+hidden layer sizes = [ (20,10,5), (15,7,2), (12,6) ]
+activation=["logistic","tanh"]
+
+print(cv.best_score_)
+0.8593406593406593
+
+print(cv.best_params_)
+{'activation': 'tanh', 'hidden_layer_sizes': (20, 10, 5), 'learning_rate': 'constant', 'learning_rate_init': 0.001}
+
+\Cases\Medical Cost Personal\ insurance.csv
+charges - Response
+Features - all other
+MLP Regressor
+initial learning rate = [0.001,0.1,0.4,0.5]
+learning rate = ['constant','invscaling','adaptive']
+hidden layer sizes = [ (20,10,5), (15,7,2), (12,6) ]
+
+using best model,predict on tstinsurance.csv
+
+
+https://docs.anaconda.com/anaconda/user-guide/tasks/tensorflow/

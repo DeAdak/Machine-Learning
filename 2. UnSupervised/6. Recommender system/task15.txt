@@ -1,0 +1,34 @@
+ml-100K
+Tune for K = 35,55,75
+For the best K,
+Get the Top 10 items to be recommended to User No. 298
+
+O/P : 814,1122,1189,1201,1293,1467,1536,1599,1653,1500
+
+---------------------
+https://www.kaggle.com/sankha1998/tmdb-top-10000-popular-movies-dataset
+-----------------------------
+http://eigentaste.berkeley.edu/dataset/
+find top 10 jokes for user id 100
+O/P iids: 32,7,108,89,111,68,135,147,63,133
+
+
+Dataset 4
+Over 100,000 new ratings from 7,699 total users: data collected from April 2015 - Nov 2019
+
+Format:
+Includes 8 new jokes 151-158.
+An excel sheet with 158 rows.
+The row number corresponds to the joke ID referred to in the Excel files below
+The first 150 jokes and their ID's are consistent with the jokes from earlier datasets
+
+Format:
+The data is formatted as an excel file representing a 7699 by 159 matrix with rows as users and columns as jokes. The left-most column 
+represents the amount of jokes rated by each user. There are a total of 7699 users and 158 jokes in this dataset.
+22 of the jokes don't have ratings, their ids are: {1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 14, 20, 27, 31, 43, 51, 52, 61, 73, 80, 100, 116}.
+8 jokes were added to this version {151-158}
+
+Each rating is from (-10.00 to +10.00) and 99 corresponds to a null rating (user did not rate that joke).
+Note that the ratings are real values ranging from -10.00 to +10.00. The jokes {1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 14, 20, 27, 31, 43, 51, 52, 61, 73, 80, 100, 116} 
+have been removed (i.e. they are never displayed or rated). As of April 2015, 8 jokes were added.
+

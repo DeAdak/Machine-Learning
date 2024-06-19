@@ -1,0 +1,13 @@
+--Bankruptcy--
+Response : D
+Features : all except D and NO
+find k based on 'roc_auc'
+--Housing--
+Response : Price
+Features : all except Price
+find k based on 'mean_square_error', r2_score
+--Concrete_Data--
+R:Sthregth
+F: All other
+n_neighbors 1 to 15 grid
+			1 to 100 Randomized CV, n_iter = 15

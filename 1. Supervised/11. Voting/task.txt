@@ -1,0 +1,40 @@
+Cases/Sonar/Sonar.csv
+train test splits
+Voting Classifier
+Log reg
+Gaussian NB
+SVC(kernel = 'linear')
+SVC(kernel = 'rbf')
+LDA()
+accuracy, roc
+
+0.6917808219178082
+0.7588612368024132
+
+-------------------------
+Cases\Concrete Strength\Concrete_data
+Voting Regressor
+Linear reg
+ElasticNet
+Lasso
+Ridge
+
+w/o weights ,
+with weights
+without weight:0.6402504780968605
+with weight:0.6402512584045086
+
+-----------------------
+Cases/Bankruptcy
+R = D
+Features: all other except NO
+roc_auc_score
+LogisticRegression
+Linear Discriminant
+DecisionTreeClassifier(max_depth=None)
+SVC(radial)
+Do voting classifier (soft)
+w/o weights ,
+with weights
+without weight:0.835800185013876
+with weight:0.833950046253469

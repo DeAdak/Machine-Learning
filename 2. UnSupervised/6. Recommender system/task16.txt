@@ -1,0 +1,29 @@
+https://www.kaggle.com/saadsikander/movies-ratings
+
+Top 5 recommended jokes for uder 100
+
+ml-100k
+best params for SVD
+top 10 items for user 100
+
+169
+515
+408
+64
+50
+22
+318
+12
+174
+143
+
+
+https://datahack.analyticsvidhya.com/contest/practice-problem-big-mart-sales-iii/#ProblemStatement
+
+from statsmodels.stats.anova import anova_lm
+from statsmodels.formula.api import ols
+######################Example 1#################################
+agr = pd.read_csv("Yield.csv")
+agrYield = ols('Yield ~ Treatments', data=agr).fit()
+table = anova_lm(agrYield, typ=2)
+print(table)
